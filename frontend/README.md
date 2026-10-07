@@ -1,3 +1,5 @@
+> **إلزامي عند العمل على ميزة في الواجهة:** اقرأ ملفها في [`../docs/features/`](../docs/features/README.md) قبل التنفيذ، وحدّثه في نفس المهمة بعد أي تغيير. راجع [`../AGENTS.md`](../AGENTS.md).
+
 # واجهة قَرأ
 
 واجهة عربية مبنية بـ Next.js وReact وTypeScript وTailwind CSS، مع مكونات UI بأسلوب shadcn/ui داخل `components/ui`.
