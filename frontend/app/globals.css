@@ -1,0 +1,2 @@
+@tailwind base;@tailwind components;@tailwind utilities;
+html{scroll-behavior:smooth}body{background:#f8f5ee;color:#172d2a}::selection{background:#e5af56;color:#172d2a}.book-cover{box-shadow:9px 12px 24px #172d2a24}.card-shadow{box-shadow:0 12px 35px #172d2a0c}

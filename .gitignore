@@ -1,0 +1,10 @@
+frontend/node_modules/
+.cache/
+.gopath/
+frontend/.next/
+frontend/tsconfig.tsbuildinfo
+frontend/.env.local
+backend/qare.db
+backend/.env
+*.db-shm
+*.db-wal
