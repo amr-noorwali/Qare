@@ -1,7 +1,81 @@
-'use client';
-import {useEffect,useState} from 'react';
-import Link from 'next/link';
-import {BookCard} from '@/components/book-card';
-import {library,LibraryBook,token} from '@/lib/api';
-const tabs=[['want','أريد قراءته'],['reading','أقرأه حاليًا'],['read','قرأته']] as const;
-export default function LibraryPage(){const [items,setItems]=useState<LibraryBook[]>([]);const [tab,setTab]=useState<'want'|'reading'|'read'>('want');const [error,setError]=useState('');const [isAuthenticated,setIsAuthenticated]=useState<boolean|null>(null);useEffect(()=>{if(!token()){setIsAuthenticated(false);return}setIsAuthenticated(true);library.list().then(setItems).catch(e=>setError(e.message))},[]);return <main className="mx-auto min-h-[60vh] max-w-6xl px-5 py-14"><span className="text-sm font-bold text-moss">مساحتي الخاصة</span><h1 className="mt-2 text-4xl font-black">مكتبتي</h1><p className="mt-3 text-moss/70">كل الكتب التي اخترتها، في مكان واحد.</p>{isAuthenticated===null?<div className="mt-10 rounded-2xl bg-white p-10 text-center text-moss">جارٍ تحميل مكتبتك...</div>:!isAuthenticated?<div className="mt-10 rounded-2xl bg-white p-10 text-center"><p>سجّل الدخول لتبدأ بتنظيم مكتبتك.</p><Link href="/login" className="mt-4 inline-block rounded-xl bg-moss px-6 py-3 font-bold text-white">تسجيل الدخول</Link></div>:<><div className="mt-10 flex gap-2 overflow-x-auto border-b border-moss/10 pb-3">{tabs.map(([key,label])=><button key={key} onClick={()=>setTab(key)} className={`whitespace-nowrap rounded-xl px-5 py-3 text-sm font-bold ${tab===key?'bg-moss text-white':'bg-white text-moss'}`}>{label} ({items.filter(b=>b.status===key).length})</button>)}</div>{error?<p className="mt-8 text-red-700">{error}</p>:items.filter(b=>b.status===tab).length?<div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 md:gap-6">{items.filter(b=>b.status===tab).map(b=><BookCard key={b.id} book={b}/>)}</div>:<div className="mt-8 rounded-2xl bg-white p-10 text-center text-moss">لا توجد كتب في هذا القسم بعد. <Link href="/" className="font-bold underline">استكشف الكتب</Link></div>}</>}</main>}
+"use client";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { BookCard } from "@/components/book-card";
+import { library, LibraryBook, token } from "@/lib/api";
+const tabs = [
+  ["want", "أريد قراءته"],
+  ["reading", "أقرأه حاليًا"],
+  ["read", "قرأته"],
+] as const;
+export default function LibraryPage() {
+  const [items, setItems] = useState<LibraryBook[]>([]);
+  const [tab, setTab] = useState<"want" | "reading" | "read">("want");
+  const [error, setError] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  useEffect(() => {
+    if (!token()) {
+      setIsAuthenticated(false);
+      return;
+    }
+    setIsAuthenticated(true);
+    library
+      .list()
+      .then(setItems)
+      .catch((e) => setError(e.message));
+  }, []);
+  return (
+    <main className="mx-auto min-h-[60vh] max-w-6xl px-5 py-14">
+      <span className="text-sm font-bold text-moss">مساحتي الخاصة</span>
+      <h1 className="mt-2 text-4xl font-black">مكتبتي</h1>
+      <p className="mt-3 text-moss/70">كل الكتب التي اخترتها، في مكان واحد.</p>
+      {isAuthenticated === null ? (
+        <div className="mt-10 rounded-2xl bg-white p-10 text-center text-moss">
+          جارٍ تحميل مكتبتك...
+        </div>
+      ) : !isAuthenticated ? (
+        <div className="mt-10 rounded-2xl bg-white p-10 text-center">
+          <p>سجّل الدخول لتبدأ بتنظيم مكتبتك.</p>
+          <Link
+            href="/login"
+            className="mt-4 inline-block rounded-xl bg-moss px-6 py-3 font-bold text-white"
+          >
+            تسجيل الدخول
+          </Link>
+        </div>
+      ) : (
+        <>
+          <div className="mt-10 flex gap-2 overflow-x-auto border-b border-moss/10 pb-3">
+            {tabs.map(([key, label]) => (
+              <button
+                key={key}
+                onClick={() => setTab(key)}
+                className={`whitespace-nowrap rounded-xl px-5 py-3 text-sm font-bold ${tab === key ? "bg-moss text-white" : "bg-white text-moss"}`}
+              >
+                {label} ({items.filter((b) => b.status === key).length})
+              </button>
+            ))}
+          </div>
+          {error ? (
+            <p className="mt-8 text-red-700">{error}</p>
+          ) : items.filter((b) => b.status === tab).length ? (
+            <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 md:gap-6">
+              {items
+                .filter((b) => b.status === tab)
+                .map((b) => (
+                  <BookCard key={b.id} book={b} />
+                ))}
+            </div>
+          ) : (
+            <div className="mt-8 rounded-2xl bg-white p-10 text-center text-moss">
+              لا توجد كتب في هذا القسم بعد.{" "}
+              <Link href="/" className="font-bold underline">
+                استكشف الكتب
+              </Link>
+            </div>
+          )}
+        </>
+      )}
+    </main>
+  );
+}
