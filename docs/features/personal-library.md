@@ -2,11 +2,15 @@
 
 # المكتبة الشخصية
 
+توثيق التنفيذ داخل مشروع الواجهة: [frontend/docs/features/personal-library.md](../../frontend/docs/features/personal-library.md).
+
 ## الحالة الحالية
 
 لكل مستخدم مكتبة خاصة. يمكنه إضافة كتاب إلى تصنيف واحد من ثلاثة: `want` = «أريد قراءته»، `reading` = «أقرأه حاليًا»، `read` = «قرأته». يمكن تغيير التصنيف أو إزالة الكتاب. تعرض صفحة `/library` تبويبات مع عدد الكتب في كل تصنيف، ولا تعرض مكتبة المستخدم إلا بعد التحقق من وجود جلسة محلية.
 
 ## مسار العمل والارتباطات
+
+في الفرونت، `app/library/page.tsx` يحتفظ بالتبويب وحالات التحميل والجلسة، و`app/books/[id]/page.tsx` يحتوي اختيار التصنيف، و`book-card.tsx` يعرض الكتب، و`lib/api.ts` يرسل الطلبات. راجع [خريطة الفرونت إند](frontend-map.md).
 
 اختيار الحالة في `frontend/app/books/[id]/page.tsx` → `library.save/remove` في `frontend/lib/api.ts` → `SaveLibrary/DeleteLibrary` في `backend/internal/handlers/api.go` → جدول `library`. صفحة `frontend/app/library/page.tsx` تستخدم `library.list()` → `repositories.Library` في `backend/internal/repositories/books.go`، وتعرض النتائج عبر `frontend/components/book-card.tsx`.
 
@@ -31,4 +35,6 @@
 
 ## سجل التغييرات
 
+- 2026-10-08: أضيف رابط توثيق المكتبة داخل مشروع الفرونت؛ روجعت علاقة الملفين.
+- 2026-10-08: وُضح توزيع المكتبة بين صفحتي المكتبة والتفاصيل والبطاقة وعميل REST؛ روجع مقابل الملفات الحالية.
 - 2026-10-08: توثيق التصنيفات ومسار البيانات وإصلاح Hydration القائم.

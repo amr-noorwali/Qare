@@ -8,6 +8,8 @@
 
 ## مسار الطلب
 
+لخريطة أدق للفرونت من الصفحة إلى المكون وخدمة REST، راجع [خريطة الفرونت إند](frontend-map.md). هذه الطبقة لا تملك صفحات مستقلة؛ يستخدمها كل مسار عبر `lib/api.ts`.
+
 `frontend/app` → `frontend/lib/api.ts` → `http://localhost:8080/api` → `backend/internal/routes/routes.go` → `backend/internal/handlers/api.go` → `backend/internal/services/auth.go` أو `backend/internal/repositories/*.go` → SQLite.
 
 **ملاحظة عن الفصل:** خدمة المصادقة موجودة في `services/auth.go`، واستعلامات القراءة في `repositories/books.go`، لكن بعض عمليات كتابة المراجعات والمكتبة تنفذ SQL داخل `handlers/api.go`. هذا واقع الـMVP الحالي، وليس فصلًا كاملًا لكل منطق العمل.
@@ -49,4 +51,5 @@
 
 ## سجل التغييرات
 
+- 2026-10-08: أضيف ارتباط بخريطة توزيع الواجهة بين المسارات والمكونات وخدمة REST؛ روجع مقابل الملفات الحالية.
 - 2026-10-08: توثيق مخطط البيانات، نقاط REST، إعدادات الربط والحدود الحالية.
