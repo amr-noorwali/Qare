@@ -1,8 +1,11 @@
 package repositories
 
 import (
+	"crypto/tls"
+	"crypto/x509"
 	"database/sql"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/go-sql-driver/mysql"
@@ -29,10 +32,22 @@ func open(dsn string, withSeed bool) (*sql.DB, error) {
 		config.Params = make(map[string]string)
 	}
 	config.Params["charset"] = "utf8mb4"
-	db, err := sql.Open("mysql", config.FormatDSN())
+	if caPath := os.Getenv("MYSQL_CA_CERT_PATH"); caPath != "" {
+		pem, err := os.ReadFile(caPath)
+		if err != nil {
+			return nil, fmt.Errorf("read MySQL CA certificate: %w", err)
+		}
+		roots := x509.NewCertPool()
+		if !roots.AppendCertsFromPEM(pem) {
+			return nil, fmt.Errorf("MySQL CA certificate contains no valid certificates")
+		}
+		config.TLS = &tls.Config{RootCAs: roots, MinVersion: tls.VersionTLS12}
+	}
+	connector, err := mysql.NewConnector(config)
 	if err != nil {
 		return nil, err
 	}
+	db := sql.OpenDB(connector)
 	db.SetMaxOpenConns(10)
 	db.SetMaxIdleConns(5)
 	db.SetConnMaxLifetime(3 * time.Minute)

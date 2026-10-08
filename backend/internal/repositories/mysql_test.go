@@ -2,12 +2,24 @@ package repositories
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
 )
 
 func TestOpenRejectsInvalidDSN(t *testing.T) {
 	if _, err := Open("not a MySQL DSN"); err == nil {
 		t.Fatal("expected invalid DSN error")
+	}
+}
+
+func TestOpenRejectsInvalidCACertificate(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "ca.pem")
+	if err := os.WriteFile(path, []byte("not a certificate"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("MYSQL_CA_CERT_PATH", path)
+	if _, err := Open("user:pass@tcp(localhost:3306)/qare"); err == nil {
+		t.Fatal("expected invalid CA certificate error")
 	}
 }
 

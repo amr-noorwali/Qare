@@ -7,5 +7,7 @@ frontend/.env.local
 backend/qare.db
 backend/qare.db.pre-mysql.bak
 backend/.env
+backend/.env.*
+backend/*.pem
 *.db-shm
 *.db-wal

@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: qare-api
+    runtime: go
+    plan: free
+    rootDir: backend
+    buildCommand: go build -trimpath -ldflags="-s -w" -o app .
+    startCommand: ./app
+    healthCheckPath: /api/books
+    envVars:
+      - key: MYSQL_DSN
+        sync: false
+      - key: FRONTEND_ORIGIN
+        sync: false
+      - key: MYSQL_CA_CERT_PATH
+        value: /etc/secrets/mysql-ca.pem

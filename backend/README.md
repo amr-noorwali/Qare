@@ -30,6 +30,10 @@ go run .
 
 اضبط `NEXT_PUBLIC_API_URL` في `frontend/` إلى عنوان الباك إند العام مع `/api`، مثل `https://api.example.com/api`. يجب أن يطابق `FRONTEND_ORIGIN` أصل موقع الفرونت الفعلي، مثل `https://example.com`.
 
+## النشر على Render
+
+ملف [`../render.yaml`](../render.yaml) يجهز خدمة Go من مجلد `backend/` مع فحص صحة `GET /api/books`. اربط مستودع GitHub بميزة Blueprint في Render، وأدخل `MYSQL_DSN` لقاعدة **MySQL مستضافة** و`FRONTEND_ORIGIN` لرابط Vercel النهائي. لا تستخدم عنوان MySQL المحلي `127.0.0.1:3307` داخل Render؛ سيشير إلى حاوية Render نفسها. إذا لم تُنشأ قاعدة مستضافة بعد، أعدّها وانقل بياناتك إليها قبل اعتبار النشر مكتملًا. الخادم يأخذ `PORT` من Render تلقائيًا.
+
 ## نقل بيانات SQLite القديمة
 
 احتفظ بنسخة احتياطية من `qare.db`، وأوقف خادم Go القديم قبل النقل حتى لا تتغير البيانات أثناء النسخ. أنشئ قاعدة MySQL **فارغة** ولا تشغّل API الجديد عليها قبل النقل، ثم من `backend/`:

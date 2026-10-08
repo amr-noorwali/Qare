@@ -20,6 +20,10 @@ npm run dev
 
 افتح http://localhost:3000 بعد تشغيل الباك إند على المنفذ 8080. `NEXT_PUBLIC_API_URL` هو عنوان REST API الكامل مع `/api`. للتحقق: `npm run lint`، ثم أوقف `npm run dev` قبل تنفيذ `npm run build`؛ كلا الأمرين يستخدم مجلد `.next` نفسه. أعد تشغيل `npm run dev` بعد البناء إذا أردت متابعة التطوير.
 
+## النشر على Vercel
+
+اربط مستودع GitHub بمشروع Vercel من نوع Next.js، واضبط **Root Directory** على `frontend`. استخدم `npm install` و`npm run build` (الإعدادات الافتراضية لـVercel)، واضبط `NEXT_PUBLIC_API_URL` في بيئة Production على رابط Render النهائي متبوعًا بـ`/api`، مثل `https://qare-api.onrender.com/api`. يجب أن يكون `FRONTEND_ORIGIN` على Render هو أصل رابط Vercel الفعلي، مثل `https://qare.vercel.app` دون `/` نهائية. أعد نشر الواجهة إذا غيّرت `NEXT_PUBLIC_API_URL` لأنها تُضمّن أثناء البناء.
+
 إذا توقف عرض الكتب وبقيت الصفحة ظاهرة، افحص تحميل ملفات `/_next/static/` في أدوات المطور. ظهور 404 لها يعني أن ملفات البناء لم تعد توافق خادم التطوير الجاري؛ أعد تشغيل `npm run dev`.
 
 تُحفظ جلسة الدخول في `localStorage` في هذه النسخة الأولية. للاستخدام الإنتاجي، انقل الجلسات إلى ملفات تعريف ارتباط `HttpOnly` مع HTTPS.
