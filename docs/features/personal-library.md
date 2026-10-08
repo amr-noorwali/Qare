@@ -16,7 +16,7 @@
 
 اختيار الحالة في `frontend/app/books/[id]/page.tsx` → `library.save/remove` في `frontend/lib/api.ts` → `backend/internal/handlers/library.go` → `backend/internal/services/library.go` → `backend/internal/repositories/library.go` → جدول `library`. صفحة `frontend/app/library/page.tsx` تستخدم `library.list()` → `repositories.Library` في `backend/internal/repositories/library.go`، وتعرض النتائج عبر `frontend/components/book-card.tsx`.
 
-المسارات محمية بـ`Require` ومرتبطة بـ[المصادقة](authentication.md). كل سجل في `library` يربط `user_id` و`book_id` بتصنيف واحد. عند النقل، يستخدم Go `ON CONFLICT` لتحديث التصنيف. يتطلب تعديل الكتاب وجوده مسبقًا في جدول `books`؛ صفحة [التفاصيل](book-details.md) هي نقطة الإضافة الأساسية.
+المسارات محمية بـ`Require` ومرتبطة بـ[المصادقة](authentication.md). كل سجل في `library` يربط `user_id` و`book_id` بتصنيف واحد. عند النقل، يستخدم Go `ON DUPLICATE KEY UPDATE` لتحديث التصنيف. يتطلب تعديل الكتاب وجوده مسبقًا في جدول `books`؛ صفحة [التفاصيل](book-details.md) هي نقطة الإضافة الأساسية.
 
 عولج سابقًا اختلاف الرسم بين الخادم والمتصفح في `/library`: تبدأ الصفحة بحالة تحميل متماثلة، ثم تقرأ `localStorage` داخل `useEffect` بعد تحميل المتصفح. هذا يمنع خطأ Hydration الذي ظهر بعد التسجيل.
 
@@ -37,6 +37,7 @@
 
 ## سجل التغييرات
 
+- 2026-10-08: نقل تخزين المكتبة إلى MySQL واستبدال صيغة upsert بصيغة MySQL؛ تحفظ أداة النقل تصنيفات المستخدم الحالية. بقي API والحالات الثلاث كما هي.
 - 2026-10-08: فصل تحقق التصنيف في service واستعلامات المكتبة في repository ومعالجات HTTP مستقلة؛ بقيت الحالات الثلاث وعقود REST كما هي.
 - 2026-10-08: عرض أغلفة كتب المكتبة بألوانها الأصلية عبر مكون البطاقة المشترك؛ لم يتغير تخزين التصنيفات أو API.
 - 2026-10-08: إضافة حركات CSS خفيفة لعنوان المكتبة وبطاقاتها وتبويباتها؛ لم يتغير تخزين التصنيفات أو API.

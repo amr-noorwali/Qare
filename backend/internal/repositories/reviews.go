@@ -31,7 +31,7 @@ func Reviews(db *sql.DB, bookID int64) ([]Review, error) {
 
 func SaveReview(db *sql.DB, bookID, userID int64, rating int, body string) error {
 	_, err := db.Exec(`INSERT INTO reviews(book_id,user_id,rating,body) VALUES(?,?,?,?)
- ON CONFLICT(book_id,user_id) DO UPDATE SET rating=excluded.rating,body=excluded.body,created_at=CURRENT_TIMESTAMP`, bookID, userID, rating, body)
+ ON DUPLICATE KEY UPDATE rating=VALUES(rating),body=VALUES(body),created_at=CURRENT_TIMESTAMP`, bookID, userID, rating, body)
 	return err
 }
 

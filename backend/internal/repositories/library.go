@@ -27,7 +27,7 @@ func Library(db *sql.DB, userID int64) ([]LibraryBook, error) {
 
 func SaveLibrary(db *sql.DB, userID, bookID int64, status string) error {
 	_, err := db.Exec(`INSERT INTO library(user_id,book_id,status) VALUES(?,?,?)
- ON CONFLICT(user_id,book_id) DO UPDATE SET status=excluded.status`, userID, bookID, status)
+ ON DUPLICATE KEY UPDATE status=VALUES(status)`, userID, bookID, status)
 	return err
 }
 

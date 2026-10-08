@@ -16,7 +16,11 @@ func env(key, fallback string) string {
 	return fallback
 }
 func main() {
-	db, err := repositories.Open(env("DATABASE_PATH", "./qare.db"))
+	dsn := os.Getenv("MYSQL_DSN")
+	if dsn == "" {
+		log.Fatal("MYSQL_DSN is required")
+	}
+	db, err := repositories.Open(dsn)
 	if err != nil {
 		log.Fatal(err)
 	}

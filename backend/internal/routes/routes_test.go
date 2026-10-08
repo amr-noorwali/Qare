@@ -3,15 +3,21 @@ package routes
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http/httptest"
-	"path/filepath"
+	"os"
 	"qare/backend/internal/handlers"
 	"qare/backend/internal/repositories"
 	"testing"
+	"time"
 )
 
 func TestCoreFlow(t *testing.T) {
-	db, err := repositories.Open(filepath.Join(t.TempDir(), "test.db"))
+	dsn := os.Getenv("MYSQL_TEST_DSN")
+	if dsn == "" {
+		t.Skip("MYSQL_TEST_DSN is not set")
+	}
+	db, err := repositories.Open(dsn)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -38,9 +44,11 @@ func TestCoreFlow(t *testing.T) {
 		return nil
 	}
 	request("GET", "/api/books?q=الخيميائي", "", "", 200)
-	registered := request("POST", "/api/auth/register", `{"name":"قارئ جديد","email":"reader@example.com","password":"secret123"}`, "", 201)
+	email := fmt.Sprintf("reader-%d@example.com", time.Now().UnixNano())
+	registered := request("POST", "/api/auth/register", fmt.Sprintf(`{"name":"قارئ جديد","email":%q,"password":"secret123"}`, email), "", 201)
 	token := registered["token"].(string)
-	request("POST", "/api/auth/login", `{"email":"reader@example.com","password":"secret123"}`, "", 200)
+	defer db.Exec("DELETE FROM users WHERE email=?", email)
+	request("POST", "/api/auth/login", fmt.Sprintf(`{"email":%q,"password":"secret123"}`, email), "", 200)
 	request("PUT", "/api/books/1/review", `{"rating":5,"body":"كتاب رائع ومميز"}`, "", 401)
 	request("PUT", "/api/books/999/review", `{"rating":5,"body":"كتاب رائع ومميز"}`, token, 404)
 	request("PUT", "/api/books/1/review", `{"rating":0,"body":"قصير"}`, token, 400)

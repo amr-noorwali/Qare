@@ -1,9 +1,30 @@
 package repositories
 
-import "database/sql"
+import (
+	"context"
+	"database/sql"
+	"errors"
+)
 
 func seed(db *sql.DB) error {
-	tx, err := db.Begin()
+	ctx := context.Background()
+	conn, err := db.Conn(ctx)
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+	var locked int
+	if err := conn.QueryRowContext(ctx, "SELECT GET_LOCK('qare_seed', 30)").Scan(&locked); err != nil {
+		return err
+	}
+	if locked != 1 {
+		return errors.New("could not acquire seed lock")
+	}
+	defer func() {
+		var released int
+		_ = conn.QueryRowContext(ctx, "SELECT RELEASE_LOCK('qare_seed')").Scan(&released)
+	}()
+	tx, err := conn.BeginTx(ctx, nil)
 	if err != nil {
 		return err
 	}
@@ -23,13 +44,26 @@ func seed(db *sql.DB) error {
 		{"الأمير الصغير", "أنطوان دو سانت إكزوبيري", "حكاية شاعرية عن الصداقة والخيال وما يغفله الكبار في زحام الحياة.", "https://covers.openlibrary.org/b/isbn/9780156012195-L.jpg", "كلاسيكيات"},
 		{"1984", "جورج أورويل", "رواية عن السلطة والمراقبة واللغة في عالم مستقبلي شديد القسوة.", "https://covers.openlibrary.org/b/isbn/9780451524935-L.jpg", "خيال ديستوبي"},
 	}
-	for _, book := range books {
-		if _, err := tx.Exec("INSERT INTO books(title,author,description,cover_url,genre) VALUES(?,?,?,?,?)", book[0], book[1], book[2], book[3], book[4]); err != nil {
+	bookIDs := make([]int64, len(books))
+	for i, book := range books {
+		result, err := tx.Exec("INSERT INTO books(title,author,description,cover_url,genre) VALUES(?,?,?,?,?)", book[0], book[1], book[2], book[3], book[4])
+		if err != nil {
+			return err
+		}
+		bookIDs[i], err = result.LastInsertId()
+		if err != nil {
 			return err
 		}
 	}
-	if _, err := tx.Exec(`INSERT INTO users(name,email,password_hash) VALUES('قارئ من منصة قارئ','demo@qare.local','seed-only');
- INSERT INTO reviews(book_id,user_id,rating,body) VALUES(1,1,5,'لغة آسرة وأسئلة تبقى معك بعد الصفحة الأخيرة.'),(3,1,4,'رحلة خفيفة وملهمة للعودة إلى الأحلام.');`); err != nil {
+	result, err := tx.Exec("INSERT INTO users(name,email,password_hash) VALUES(?,?,?)", "قارئ من منصة قارئ", "demo@qare.local", "seed-only")
+	if err != nil {
+		return err
+	}
+	demoID, err := result.LastInsertId()
+	if err != nil {
+		return err
+	}
+	if _, err := tx.Exec("INSERT INTO reviews(book_id,user_id,rating,body) VALUES(?,?,?,?),(?,?,?,?)", bookIDs[0], demoID, 5, "لغة آسرة وأسئلة تبقى معك بعد الصفحة الأخيرة.", bookIDs[2], demoID, 4, "رحلة خفيفة وملهمة للعودة إلى الأحلام."); err != nil {
 		return err
 	}
 	return tx.Commit()
