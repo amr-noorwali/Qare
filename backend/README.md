@@ -32,6 +32,8 @@ go run .
 
 ## النشر على Render
 
+لربط خدمة Aiven، نزّل شهادة CA من صفحة الخدمة، ثم شغّل `backend/scripts/prepare-aiven.ps1` من جذر المشروع في PowerShell. يجمع المساعد بيانات الاتصال محليًا، ويحفظ كلمة المرور مشفرة لحساب Windows الحالي في `.cache/aiven-connection.json`، ويضع الشهادة في `backend/aiven-ca.pem`. كلا الملفين مستبعد من Git. تُضبط `MYSQL_DSN` و`MYSQL_CA_CERT_PATH` وشهادة `mysql-ca.pem` في Render بعد الموافقة على إرسال بيانات الاتصال للخدمة.
+
 ملف [`../render.yaml`](../render.yaml) يجهز خدمة Go من مجلد `backend/` مع فحص صحة `GET /api/books`. اربط مستودع GitHub بميزة Blueprint في Render، وأدخل `MYSQL_DSN` لقاعدة **MySQL مستضافة** و`FRONTEND_ORIGIN` لرابط Vercel النهائي. لا تستخدم عنوان MySQL المحلي `127.0.0.1:3307` داخل Render؛ سيشير إلى حاوية Render نفسها. إذا لم تُنشأ قاعدة مستضافة بعد، أعدّها وانقل بياناتك إليها قبل اعتبار النشر مكتملًا. الخادم يأخذ `PORT` من Render تلقائيًا.
 
 ## نقل بيانات SQLite القديمة
