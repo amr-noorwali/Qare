@@ -14,11 +14,12 @@
 |---|---|---|
 | `app/` | المسارات، تركيب الشاشة، حالة الصفحة وتفاعلاتها | `app/page.tsx`, `app/library/page.tsx`, `app/books/[id]/page.tsx` |
 | `components/` | واجهة مشتركة أو قابلة لإعادة الاستخدام | `header.tsx`, `book-card.tsx`, `auth-form.tsx` |
+| `components/landing/` | أقسام الصفحة الرئيسية التحريرية، منفصلة عن البحث وعرض الكتب | `hero.tsx`, `story-section.tsx`, `reading-paths.tsx`, `membership-cta.tsx` |
 | `components/ui/` | مكونات UI عامة | `button.tsx` |
 | `lib/api.ts` | أنواع بيانات الواجهة وعميل REST ودوال `auth`, `books`, `library` | `api()`, `books.list()`, `library.save()` |
 | `lib/utils.ts` | دمج أسماء CSS | `cn()` |
-| `app/globals.css`, `tailwind.config.ts` | الخط والألوان والأنماط العامة | Tajawal، ألوان `ink/moss/cream/gold` |
-| `public/`, `app/icon.svg` | أصول الشعار والأيقونة | `qare-logo.svg` |
+| `app/globals.css`, `tailwind.config.ts` | الخط والألوان وتأثيرات الزجاج والأنماط العامة | Tajawal، ألوان `ink/paper/mist/line/muted` |
+| `public/`, `app/icon.svg` | أصول الشعار والأيقونة وصورة الهيرو والصور التحريرية | `qare-logo.svg`, `hero-book-stack.png`, `editorial-library.webp`, `editorial-reading.webp` |
 
 ## خريطة الميزات في الفرونت
 
@@ -43,5 +44,8 @@
 
 ## سجل التغييرات
 
+- 2026-10-08: استُبدل أصل الهيرو السابق بصورة كومة الكتب المقدمة من المستخدم داخل `public/`؛ لم يتغير توزيع مكونات الصفحة.
+- 2026-10-08: أضيفت رسمة الهيرو ثنائية اللون إلى خريطة الأصول؛ بقيت أقسام الهبوط منفصلة في `components/landing/` والبحث في `app/page.tsx`.
+- 2026-10-08: أضيفت مكونات الهبوط المستقلة وصور WebP التحريرية، ووُثّقت لوحة الأبيض والأسود وتأثيرات الزجاج بعد إعادة تصميم الواجهة؛ بقي البحث والمصادقة والمراجعات والمكتبة على عميل REST نفسه.
 - 2026-10-08: رُبطت الخريطة بفهرس توثيق الميزات داخل مشروع الفرونت.
 - 2026-10-08: أضيفت خريطة صريحة للصفحات والمكونات وخدمة API وحالة كل ميزة لتوضيح أن التنفيذ لا يقتصر على `app/`.

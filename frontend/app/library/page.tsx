@@ -25,32 +25,32 @@ export default function LibraryPage() {
       .catch((e) => setError(e.message));
   }, []);
   return (
-    <main className="mx-auto min-h-[60vh] max-w-6xl px-5 py-14">
-      <span className="text-sm font-bold text-moss">مساحتي الخاصة</span>
-      <h1 className="mt-2 text-4xl font-black">مكتبتي</h1>
-      <p className="mt-3 text-moss/70">كل الكتب التي اخترتها، في مكان واحد.</p>
+    <main className="mx-auto min-h-[70vh] max-w-7xl px-5 py-16 md:px-8 md:py-24">
+      <span className="section-kicker text-muted">مساحتي الخاصة / 02</span>
+      <h1 className="mt-5 text-5xl font-extrabold md:text-7xl">مكتبتي<span className="text-muted">.</span></h1>
+      <p className="mt-5 text-lg text-muted">كل الكتب التي اخترتها، في مكان واحد.</p>
       {isAuthenticated === null ? (
-        <div className="mt-10 rounded-2xl bg-white p-10 text-center text-moss">
+        <div className="glass-light mt-12 p-12 text-center text-muted">
           جارٍ تحميل مكتبتك...
         </div>
       ) : !isAuthenticated ? (
-        <div className="mt-10 rounded-2xl bg-white p-10 text-center">
+        <div className="glass-light mt-12 p-12 text-center">
           <p>سجّل الدخول لتبدأ بتنظيم مكتبتك.</p>
           <Link
             href="/login"
-            className="mt-4 inline-block rounded-xl bg-moss px-6 py-3 font-bold text-white"
+            className="mt-6 inline-block border border-ink bg-ink px-7 py-3 font-bold text-white transition hover:bg-white hover:text-ink"
           >
             تسجيل الدخول
           </Link>
         </div>
       ) : (
         <>
-          <div className="mt-10 flex gap-2 overflow-x-auto border-b border-moss/10 pb-3">
+          <div className="mt-14 flex gap-3 overflow-x-auto border-b border-black/15 pb-4">
             {tabs.map(([key, label]) => (
               <button
                 key={key}
                 onClick={() => setTab(key)}
-                className={`whitespace-nowrap rounded-xl px-5 py-3 text-sm font-bold ${tab === key ? "bg-moss text-white" : "bg-white text-moss"}`}
+                className={`whitespace-nowrap border px-5 py-3 text-sm font-bold transition ${tab === key ? "border-ink bg-ink text-white" : "border-black/15 bg-white/70 text-ink hover:border-ink"}`}
               >
                 {label} ({items.filter((b) => b.status === key).length})
               </button>
@@ -59,7 +59,7 @@ export default function LibraryPage() {
           {error ? (
             <p className="mt-8 text-red-700">{error}</p>
           ) : items.filter((b) => b.status === tab).length ? (
-            <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 md:gap-6">
+            <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {items
                 .filter((b) => b.status === tab)
                 .map((b) => (
@@ -67,7 +67,7 @@ export default function LibraryPage() {
                 ))}
             </div>
           ) : (
-            <div className="mt-8 rounded-2xl bg-white p-10 text-center text-moss">
+            <div className="glass-light mt-10 p-12 text-center text-muted">
               لا توجد كتب في هذا القسم بعد.{" "}
               <Link href="/" className="font-bold underline">
                 استكشف الكتب

@@ -1,7 +1,7 @@
 "use client";
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Star, BookOpen } from "lucide-react";
+import { ArrowRight, Star } from "lucide-react";
 import { books, library, Book, Review, token } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 export default function BookPage({
@@ -94,44 +94,44 @@ export default function BookPage({
     );
   const mine = reviews.find((r) => r.user_id === userID);
   return (
-    <main className="mx-auto max-w-6xl px-5 py-10">
+    <main className="mx-auto min-h-[70vh] max-w-7xl px-5 py-12 md:px-8 md:py-16">
       <Link
         href="/"
-        className="inline-flex items-center gap-2 text-sm font-bold text-moss"
+        className="inline-flex items-center gap-2 border-b border-black/30 pb-1 text-sm font-bold text-ink"
       >
         <ArrowRight size={16} />
         العودة للكتب
       </Link>
-      <section className="mt-8 grid gap-10 rounded-3xl bg-white p-6 md:grid-cols-[260px_1fr] md:p-10 card-shadow">
-        <div className="flex min-h-80 items-center justify-center rounded-2xl bg-[#eee9de] p-6">
+      <section className="mt-10 grid gap-10 border border-black/10 bg-white p-6 card-shadow md:grid-cols-[330px_1fr] md:gap-16 md:p-12">
+        <div className="flex min-h-[420px] items-center justify-center bg-[#e8e8e6] p-8">
           <img
             src={book.cover_url}
             alt={`غلاف ${book.title}`}
-            className="book-cover max-h-80 max-w-full object-contain"
+            className="editorial-cover max-h-96 max-w-full object-contain drop-shadow-[12px_18px_22px_rgba(0,0,0,.22)]"
           />
         </div>
         <div>
-          <span className="text-sm font-bold text-moss">{book.genre}</span>
-          <h1 className="mt-3 text-4xl font-black">{book.title}</h1>
-          <p className="mt-3 text-lg text-moss">تأليف {book.author}</p>
+          <span className="section-kicker text-muted">{book.genre}</span>
+          <h1 className="mt-5 text-4xl font-extrabold leading-tight md:text-6xl">{book.title}</h1>
+          <p className="mt-4 text-lg text-muted">تأليف {book.author}</p>
           <div className="mt-6 flex items-center gap-2">
-            <Star className="fill-gold text-gold" />
+            <Star className="fill-ink text-ink" />
             <b className="text-xl">
               {book.average_rating ? book.average_rating.toFixed(1) : "—"}
             </b>
-            <span className="text-moss/60">من {book.review_count} مراجعة</span>
+            <span className="text-muted">من {book.review_count} مراجعة</span>
           </div>
-          <h2 className="mt-9 text-lg font-black">عن الكتاب</h2>
-          <p className="mt-2 max-w-2xl leading-8 text-moss/80">
+          <h2 className="mt-10 border-t border-black/10 pt-8 text-lg font-extrabold">عن الكتاب</h2>
+          <p className="mt-3 max-w-2xl leading-9 text-muted">
             {book.description}
           </p>
-          <div className="mt-8 border-t border-moss/10 pt-6">
+          <div className="mt-8 border-t border-black/10 pt-6">
             {userID ? (
               <label className="flex flex-wrap items-center gap-3 text-sm font-bold">
                 أضف إلى مكتبتي{" "}
                 <select
                   aria-label="تصنيف الكتاب في مكتبتي"
-                  className="rounded-xl border border-moss/20 bg-cream px-4 py-3"
+                  className="border border-black/20 bg-paper px-4 py-3"
                   value={status}
                   onChange={(e) => saveStatus(e.target.value)}
                 >
@@ -142,43 +142,43 @@ export default function BookPage({
                 </select>
               </label>
             ) : (
-              <Link href="/login" className="font-bold text-moss underline">
+              <Link href="/login" className="font-bold text-ink underline underline-offset-4">
                 سجّل الدخول لإضافة الكتاب إلى مكتبتك
               </Link>
             )}
           </div>
         </div>
       </section>
-      <section className="mt-14 grid gap-10 lg:grid-cols-[1fr_360px]">
+      <section className="mt-20 grid gap-10 lg:grid-cols-[1fr_380px]">
         <div>
-          <h2 className="text-2xl font-black">
-            آراء القراء <span className="text-moss/50">({reviews.length})</span>
+          <h2 className="text-3xl font-extrabold">
+            آراء القراء <span className="text-muted">({reviews.length})</span>
           </h2>
           <div className="mt-6 space-y-4">
             {reviews.length ? (
               reviews.map((r) => (
                 <article
                   key={r.id}
-                  className="rounded-2xl border border-moss/10 bg-white p-6"
+                  className="border border-black/10 bg-white p-7"
                 >
                   <div className="flex items-center justify-between">
                     <strong>{r.user_name}</strong>
                     <span className="flex items-center gap-1 text-sm font-bold">
-                      <Star size={16} className="fill-gold text-gold" />
+                      <Star size={16} className="fill-ink text-ink" />
                       {r.rating}/5
                     </span>
                   </div>
-                  <p className="mt-3 leading-7 text-moss/80">{r.body}</p>
+                  <p className="mt-4 leading-8 text-muted">{r.body}</p>
                 </article>
               ))
             ) : (
-              <p className="rounded-2xl bg-white p-6 text-moss">
+              <p className="border border-black/10 bg-white p-7 text-muted">
                 كن أول من يراجع هذا الكتاب.
               </p>
             )}
           </div>
         </div>
-        <aside className="h-fit rounded-2xl bg-[#e8eee8] p-6">
+        <aside className="glass-light h-fit p-7 md:p-8">
           <h2 className="text-xl font-black">
             {mine ? "عدّل مراجعتك" : "شارك رأيك"}
           </h2>
@@ -195,7 +195,7 @@ export default function BookPage({
                     <Star
                       size={27}
                       className={
-                        n <= rating ? "fill-gold text-gold" : "text-moss/30"
+                        n <= rating ? "fill-ink text-ink" : "text-ink/20"
                       }
                     />
                   </button>
@@ -206,7 +206,7 @@ export default function BookPage({
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
                 placeholder="ما الذي أعجبك في الكتاب؟"
-                className="mt-5 h-32 w-full rounded-xl border border-moss/20 bg-white p-4 outline-none"
+                className="mt-5 h-32 w-full border border-black/20 bg-white/80 p-4 outline-none focus:border-ink"
               />
               <div className="mt-3 flex gap-2">
                 <Button onClick={saveReview}>حفظ المراجعة</Button>
@@ -219,14 +219,14 @@ export default function BookPage({
             </>
           ) : (
             <p className="mt-4 text-sm leading-7">
-              <Link href="/login" className="font-bold text-moss underline">
+              <Link href="/login" className="font-bold text-ink underline underline-offset-4">
                 سجّل الدخول
               </Link>{" "}
               لتكتب مراجعتك.
             </p>
           )}
           {message && (
-            <p role="status" className="mt-4 text-sm text-moss">
+            <p role="status" className="mt-4 text-sm text-muted">
               {message}
             </p>
           )}

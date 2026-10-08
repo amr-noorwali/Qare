@@ -2,5 +2,36 @@
 @import '@fontsource/tajawal/500.css';
 @import '@fontsource/tajawal/700.css';
 @import '@fontsource/tajawal/800.css';
-@tailwind base;@tailwind components;@tailwind utilities;
-html{scroll-behavior:smooth}body{background:#f8f5ee;color:#172d2a}::selection{background:#e5af56;color:#172d2a}.book-cover{box-shadow:9px 12px 24px #172d2a24}.card-shadow{box-shadow:0 12px 35px #172d2a0c}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; }
+html { scroll-behavior: smooth; }
+body { background: #f7f7f5; color: #111; }
+::selection { background: #111; color: #fff; }
+button, input, textarea, select { font: inherit; }
+
+.glass-light {
+  background: rgba(255,255,255,.64);
+  border: 1px solid rgba(255,255,255,.8);
+  box-shadow: 0 22px 70px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.75);
+  backdrop-filter: blur(22px) saturate(135%);
+  -webkit-backdrop-filter: blur(22px) saturate(135%);
+}
+.glass-dark {
+  background: rgba(14,14,14,.43);
+  border: 1px solid rgba(255,255,255,.24);
+  box-shadow: 0 24px 70px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.08);
+  backdrop-filter: blur(22px) saturate(125%);
+  -webkit-backdrop-filter: blur(22px) saturate(125%);
+}
+.editorial-cover { filter: grayscale(1) contrast(1.05); transition: filter .5s ease, transform .6s ease; }
+.group:hover .editorial-cover { filter: grayscale(1) contrast(1.18); transform: scale(1.045); }
+.card-shadow { box-shadow: 0 24px 60px rgba(0,0,0,.055); }
+.section-kicker { font-size: .7rem; font-weight: 800; letter-spacing: .24em; text-transform: uppercase; }
+.hairline { border-color: rgba(17,17,17,.13); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .editorial-cover { transition: none; }
+}

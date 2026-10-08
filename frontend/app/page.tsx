@@ -1,7 +1,46 @@
 'use client';
-import { useEffect,useState } from 'react';
-import { Search, ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
+
+import { useEffect, useState } from 'react';
+import { Search, ArrowUpLeft } from 'lucide-react';
 import { Book, books } from '@/lib/api';
 import { BookCard } from '@/components/book-card';
-export default function Home(){const [items,setItems]=useState<Book[]>([]);const [query,setQuery]=useState('');const [loading,setLoading]=useState(true);const [error,setError]=useState('');useEffect(()=>{let active=true;setLoading(true);const timer=setTimeout(()=>books.list(query).then(v=>{if(active){setItems(v);setError('')}}).catch(e=>active&&setError(e.message)).finally(()=>active&&setLoading(false)),250);return()=>{active=false;clearTimeout(timer)}},[query]);return <main><section className="relative overflow-hidden bg-ink text-white"><div className="pointer-events-none absolute -left-20 -top-32 h-96 w-96 rounded-full border-[70px] border-white/5"/><div className="mx-auto grid max-w-6xl gap-10 px-5 py-20 md:grid-cols-2 md:py-28"><div className="relative z-10"><span className="rounded-full bg-white/10 px-4 py-2 text-sm text-[#e9c88b]">مساحة لكل قارئ</span><h1 className="mt-7 text-5xl font-black leading-tight md:text-7xl">بين الصفحات<br/><span className="text-gold">تبدأ الحكاية.</span></h1><p className="mt-6 max-w-lg text-lg leading-8 text-white/70">اكتشف كتابك القادم، شارك انطباعك، واحتفظ بكل قراءاتك في مكان واحد.</p><a href="#books" className="mt-9 inline-flex items-center gap-2 rounded-xl bg-gold px-6 py-3 font-bold text-ink">اكتشف الكتب <ArrowLeft size={18}/></a></div><div className="relative hidden items-center justify-center md:flex"><div className="absolute h-72 w-72 rounded-full bg-gold/10 blur-3xl"/><div className="relative -rotate-6 rounded-lg bg-[#d6a66b] p-5 shadow-2xl"><div className="flex h-72 w-48 items-center justify-center border-2 border-white/50 text-center text-3xl font-black text-ink">كل كتاب<br/>عالم جديد</div></div><div className="relative -mr-8 mt-16 rotate-6 rounded-lg bg-[#769388] p-5 shadow-2xl"><div className="flex h-72 w-48 items-center justify-center border-2 border-white/50 text-center text-3xl font-black text-white">اقرأ<br/>واكتشف</div></div></div></div></section><section id="books" className="mx-auto max-w-6xl px-5 py-16"><div className="flex flex-col justify-between gap-6 md:flex-row md:items-end"><div><span className="text-sm font-bold text-moss">مكتبة قَرأ</span><h2 className="mt-2 text-3xl font-black md:text-4xl">كتب تستحق القراءة</h2><p className="mt-2 text-moss/70">تصفح اختياراتنا وابدأ رحلتك التالية.</p></div><label className="flex w-full items-center gap-3 rounded-xl border border-moss/20 bg-white px-4 py-3 md:w-80"><Search size={19} className="text-moss/60"/><input aria-label="ابحث عن كتاب أو مؤلف" value={query} onChange={e=>setQuery(e.target.value)} placeholder="ابحث عن كتاب أو مؤلف..." className="w-full bg-transparent text-sm outline-none"/></label></div>{error?<p className="mt-10 text-red-700">{error}</p>:loading?<p className="mt-10 text-moss">جارٍ تحميل الكتب...</p>:items.length?<div className="mt-9 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 md:gap-6">{items.map(book=><BookCard key={book.id} book={book}/>)}</div>:<p className="mt-10 rounded-xl bg-white p-8 text-center text-moss">لم نجد كتبًا تطابق بحثك.</p>}</section><section className="mx-auto max-w-6xl px-5"><div className="rounded-3xl bg-[#e8eee8] px-8 py-12 text-center"><h2 className="text-3xl font-black">مكتبتك، على طريقتك</h2><p className="mt-3 text-moss/80">رتّب الكتب بين ما تريد قراءته وما تقرأه الآن وما أنهيته.</p><Link href="/library" className="mt-6 inline-block rounded-xl bg-moss px-6 py-3 font-bold text-white">اذهب إلى مكتبتي</Link></div></section></main>}
+import { Hero } from '@/components/landing/hero';
+import { StorySection } from '@/components/landing/story-section';
+import { ReadingPaths } from '@/components/landing/reading-paths';
+import { MembershipCta } from '@/components/landing/membership-cta';
+
+export default function Home() {
+  const [items, setItems] = useState<Book[]>([]);
+  const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    const timer = setTimeout(() => {
+      books.list(query).then((result) => {
+        if (active) { setItems(result); setError(''); }
+      }).catch((e) => { if (active) setError(e.message); })
+        .finally(() => { if (active) setLoading(false); });
+    }, 250);
+    return () => { active = false; clearTimeout(timer); };
+  }, [query]);
+
+  return <main>
+    <Hero />
+    <section id="books" className="scroll-mt-24 bg-paper py-20 md:py-28">
+      <div className="mx-auto max-w-7xl px-5 md:px-8">
+        <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div><p className="section-kicker text-muted">مختارات قارئ / 01</p><h2 className="mt-5 text-4xl font-extrabold leading-tight md:text-6xl">كتب تستحق<br/><span className="font-normal text-muted">أن تتوقف عندها.</span></h2></div>
+          <div className="max-w-sm"><p className="leading-8 text-muted">من روايات تترك سؤالًا، إلى أفكار تفتح بابًا جديدًا. ابحث عما يشبه فضولك.</p><span className="mt-5 inline-flex items-center gap-2 text-xs font-bold text-ink">اكتشف مجموعتنا <ArrowUpLeft size={15}/></span></div>
+        </div>
+        <label id="book-search" className="glass-light mt-12 flex w-full scroll-mt-28 items-center gap-4 px-5 py-4 md:max-w-lg"><Search size={20} strokeWidth={1.5} className="text-muted"/><input aria-label="ابحث عن كتاب أو مؤلف" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="ابحث عن عنوان أو مؤلف..." className="w-full bg-transparent text-base text-ink outline-none placeholder:text-muted/70"/><span className="hidden border-r border-black/15 pr-4 text-[11px] font-bold tracking-widest text-muted sm:block">SEARCH</span></label>
+        {error ? <p role="alert" className="mt-10 border border-black/15 bg-white p-6 text-ink">{error}</p> : loading ? <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-label="جارٍ تحميل الكتب">{[1,2,3].map((n)=><div key={n} className="aspect-[4/5] animate-pulse bg-mist"/>)}</div> : items.length ? <div className="mt-10 grid gap-9 sm:grid-cols-2 lg:grid-cols-3">{items.map((book,index)=><BookCard key={book.id} book={book} index={index}/>)}</div> : <p className="mt-10 border border-black/15 bg-white p-10 text-center text-muted">لم نجد كتبًا تطابق بحثك. جرّب عنوانًا أو مؤلفًا آخر.</p>}
+      </div>
+    </section>
+    <StorySection />
+    <ReadingPaths />
+    <MembershipCta />
+  </main>;
+}

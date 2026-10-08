@@ -28,6 +28,10 @@ func Open(path string) (*sql.DB, error) {
 		db.Close()
 		return nil, err
 	}
+	if _, err = db.Exec("UPDATE users SET name=? WHERE email=? AND password_hash=?", "قارئ من منصة قارئ", "demo@qare.local", "seed-only"); err != nil {
+		db.Close()
+		return nil, err
+	}
 	return db, nil
 }
 
@@ -52,7 +56,7 @@ func seed(db *sql.DB) error {
 			return err
 		}
 	}
-	_, err := db.Exec(`INSERT INTO users(name,email,password_hash) VALUES('قارئ من قَرأ','demo@qare.local','seed-only');
+	_, err := db.Exec(`INSERT INTO users(name,email,password_hash) VALUES('قارئ من منصة قارئ','demo@qare.local','seed-only');
  INSERT INTO reviews(book_id,user_id,rating,body) VALUES(1,1,5,'لغة آسرة وأسئلة تبقى معك بعد الصفحة الأخيرة.'),(3,1,4,'رحلة خفيفة وملهمة للعودة إلى الأحلام.');`)
 	return err
 }
