@@ -28,10 +28,9 @@ func open(dsn string, withSeed bool) (*sql.DB, error) {
 		return nil, fmt.Errorf("invalid MySQL DSN: %w", err)
 	}
 	config.ParseTime = false // Keep the API's existing SQL timestamp strings.
-	if config.Params == nil {
-		config.Params = make(map[string]string)
+	if err := config.Apply(mysql.Charset("utf8mb4", "")); err != nil {
+		return nil, err
 	}
-	config.Params["charset"] = "utf8mb4"
 	if caPath := os.Getenv("MYSQL_CA_CERT_PATH"); caPath != "" {
 		pem, err := os.ReadFile(caPath)
 		if err != nil {

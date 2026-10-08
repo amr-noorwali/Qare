@@ -23,6 +23,25 @@ func TestOpenRejectsInvalidCACertificate(t *testing.T) {
 	}
 }
 
+func TestMySQLConnectionUsesUTF8MB4(t *testing.T) {
+	dsn := os.Getenv("MYSQL_TEST_DSN")
+	if dsn == "" {
+		t.Skip("MYSQL_TEST_DSN is not set")
+	}
+	db, err := OpenForImport(dsn)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+	var charset string
+	if err := db.QueryRow("SELECT @@character_set_connection").Scan(&charset); err != nil {
+		t.Fatal(err)
+	}
+	if charset != "utf8mb4" {
+		t.Fatalf("connection charset = %q, want utf8mb4", charset)
+	}
+}
+
 // MYSQL_TEST_DSN must point to an isolated disposable MySQL database.
 func TestMySQLSchemaAndSeed(t *testing.T) {
 	dsn := os.Getenv("MYSQL_TEST_DSN")
