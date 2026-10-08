@@ -8,11 +8,12 @@
 
 :root { color-scheme: light; }
 html { scroll-behavior: smooth; }
-body { background: #f7f7f5; color: #111; }
+body { background: #f7f7f5; color: #111; font-size: 1.0625rem; line-height: 1.7; }
 ::selection { background: #111; color: #fff; }
 button, input, textarea, select { font: inherit; }
 
 .glass-light {
+  border-radius: 16px;
   background: rgba(255,255,255,.64);
   border: 1px solid rgba(255,255,255,.8);
   box-shadow: 0 22px 70px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.75);
@@ -20,16 +21,22 @@ button, input, textarea, select { font: inherit; }
   -webkit-backdrop-filter: blur(22px) saturate(135%);
 }
 .glass-dark {
+  border-radius: 16px;
   background: rgba(14,14,14,.43);
   border: 1px solid rgba(255,255,255,.24);
   box-shadow: 0 24px 70px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.08);
   backdrop-filter: blur(22px) saturate(125%);
   -webkit-backdrop-filter: blur(22px) saturate(125%);
 }
+.story-caption {
+  background: rgba(0,0,0,.92);
+  border-radius: 12px;
+  box-shadow: none;
+}
 .editorial-cover { filter: grayscale(1) contrast(1.05); transition: filter .5s ease, transform .6s ease; }
 .group:hover .editorial-cover { filter: grayscale(1) contrast(1.18); transform: scale(1.045); }
-.card-shadow { box-shadow: 0 24px 60px rgba(0,0,0,.055); }
-.section-kicker { font-size: .7rem; font-weight: 800; letter-spacing: .24em; text-transform: uppercase; }
+.card-shadow { border-radius: 16px; box-shadow: 0 24px 60px rgba(0,0,0,.055); }
+.section-kicker { font-size: .875rem; font-weight: 700; line-height: 1.5; }
 .hairline { border-color: rgba(17,17,17,.13); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

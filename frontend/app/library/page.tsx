@@ -27,7 +27,7 @@ export default function LibraryPage() {
   return (
     <main className="mx-auto min-h-[70vh] max-w-7xl px-5 py-16 md:px-8 md:py-24">
       <span className="section-kicker text-muted">مساحتي الخاصة / 02</span>
-      <h1 className="mt-5 text-5xl font-extrabold md:text-7xl">مكتبتي<span className="text-muted">.</span></h1>
+      <h1 className="mt-5 text-5xl font-extrabold md:text-6xl">مكتبتي<span className="text-muted">.</span></h1>
       <p className="mt-5 text-lg text-muted">كل الكتب التي اخترتها، في مكان واحد.</p>
       {isAuthenticated === null ? (
         <div className="glass-light mt-12 p-12 text-center text-muted">
@@ -38,7 +38,7 @@ export default function LibraryPage() {
           <p>سجّل الدخول لتبدأ بتنظيم مكتبتك.</p>
           <Link
             href="/login"
-            className="mt-6 inline-block border border-ink bg-ink px-7 py-3 font-bold text-white transition hover:bg-white hover:text-ink"
+            className="mt-6 inline-block rounded-xl border border-ink bg-ink px-7 py-3 font-bold text-white transition hover:bg-white hover:text-ink"
           >
             تسجيل الدخول
           </Link>
@@ -50,7 +50,7 @@ export default function LibraryPage() {
               <button
                 key={key}
                 onClick={() => setTab(key)}
-                className={`whitespace-nowrap border px-5 py-3 text-sm font-bold transition ${tab === key ? "border-ink bg-ink text-white" : "border-black/15 bg-white/70 text-ink hover:border-ink"}`}
+                className={`whitespace-nowrap rounded-xl border px-5 py-3 text-sm font-bold transition ${tab === key ? "border-ink bg-ink text-white" : "border-black/15 bg-white/70 text-ink hover:border-ink"}`}
               >
                 {label} ({items.filter((b) => b.status === key).length})
               </button>

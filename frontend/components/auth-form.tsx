@@ -34,12 +34,12 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
       <Link href="/" className="inline-flex items-center gap-3 text-xl font-extrabold"><img src="/qare-logo.svg" alt="" width={40} height={40} className="h-10 w-10 object-contain"/>قارئ</Link>
       <p className="section-kicker mt-12 text-muted">مساحة القارئ</p>
       <h1 className="mt-4 text-4xl font-extrabold leading-tight">{mode === 'register' ? 'ابدأ حكايتك هنا.' : 'مرحبًا بعودتك.'}</h1>
-      <p className="mt-3 leading-8 text-muted">{mode === 'register' ? 'حساب واحد يجمع مراجعاتك وكتبك ورحلتك القرائية.' : 'أكمل رحلتك بين الكتب التي اخترتها.'}</p>
+      <p className="mt-3 leading-relaxed text-muted">{mode === 'register' ? 'حساب واحد يجمع مراجعاتك وكتبك ورحلتك القرائية.' : 'أكمل رحلتك بين الكتب التي اخترتها.'}</p>
       <form onSubmit={submit} className="mt-10 space-y-6">
-        {mode === 'register' && <label className="block text-sm font-bold">الاسم<input required minLength={2} value={name} onChange={(e) => setName(e.target.value)} className="mt-2 w-full border border-black/20 bg-white/75 px-4 py-3.5 outline-none transition focus:border-ink" /></label>}
-        <label className="block text-sm font-bold">البريد الإلكتروني<input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-2 w-full border border-black/20 bg-white/75 px-4 py-3.5 outline-none transition focus:border-ink" /></label>
-        <label className="block text-sm font-bold">كلمة المرور<input required minLength={8} type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="mt-2 w-full border border-black/20 bg-white/75 px-4 py-3.5 outline-none transition focus:border-ink" /></label>
-        {error && <p role="alert" className="border-r-2 border-ink bg-white/70 px-4 py-3 text-sm text-ink">{error}</p>}
+        {mode === 'register' && <label className="block text-sm font-bold">الاسم<input required minLength={2} value={name} onChange={(e) => setName(e.target.value)} className="mt-2 w-full rounded-xl border border-black/20 bg-white/75 px-4 py-3.5 outline-none transition focus:border-ink" /></label>}
+        <label className="block text-sm font-bold">البريد الإلكتروني<input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-2 w-full rounded-xl border border-black/20 bg-white/75 px-4 py-3.5 outline-none transition focus:border-ink" /></label>
+        <label className="block text-sm font-bold">كلمة المرور<input required minLength={8} type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="mt-2 w-full rounded-xl border border-black/20 bg-white/75 px-4 py-3.5 outline-none transition focus:border-ink" /></label>
+        {error && <p role="alert" className="rounded-xl border-r-2 border-ink bg-white/70 px-4 py-3 text-sm text-ink">{error}</p>}
         <Button disabled={busy} className="w-full" type="submit">{busy ? 'جارٍ المعالجة...' : mode === 'register' ? 'إنشاء حساب' : 'تسجيل الدخول'}</Button>
       </form>
       <p className="mt-8 border-t border-black/10 pt-6 text-center text-sm text-muted">{mode === 'register' ? 'لديك حساب؟' : 'جديد هنا؟'} <Link className="font-extrabold text-ink underline underline-offset-4" href={mode === 'register' ? '/login' : '/register'}>{mode === 'register' ? 'سجّل الدخول' : 'أنشئ حسابًا'}</Link></p>

@@ -18,8 +18,8 @@
 | `components/ui/` | مكونات UI عامة | `button.tsx` |
 | `lib/api.ts` | أنواع بيانات الواجهة وعميل REST ودوال `auth`, `books`, `library` | `api()`, `books.list()`, `library.save()` |
 | `lib/utils.ts` | دمج أسماء CSS | `cn()` |
-| `app/globals.css`, `tailwind.config.ts` | الخط والألوان وتأثيرات الزجاج والأنماط العامة | Tajawal، ألوان `ink/paper/mist/line/muted` |
-| `public/`, `app/icon.svg` | أصول الشعار والأيقونة وصورة الهيرو والصور التحريرية | `qare-logo.svg`, `hero-book-stack.png`, `editorial-library.webp`, `editorial-reading.webp` |
+| `app/globals.css`, `tailwind.config.ts` | خط Tajawal ومقياس أحجام النص وتباعد الأسطر والألوان وتأثيرات الزجاج | أحجام `text-xs` إلى `text-7xl`، وألوان `ink/paper/mist/line/muted` |
+| `public/`, `app/icon.svg` | أصول الشعار والأيقونة وصور الهيرو والقصة وخلفية الحساب | `qare-logo.svg`, `hero-book-stack.png`, `story-hands-book.png`, `editorial-library.webp` |
 
 ## خريطة الميزات في الفرونت
 
@@ -44,6 +44,8 @@
 
 ## سجل التغييرات
 
+- 2026-10-08: استُبدل أصل قسم القصة بـ`story-hands-book.png` وحُذف `editorial-reading.webp` غير المستخدم؛ بقي توزيع المكونات والـAPI كما هو.
+- 2026-10-08: أضيف مقياس خط مركزي في `tailwind.config.ts` وحجم النص الأساسي في `app/globals.css`، وطُبّق على الصفحات والمكونات دون تغيير مواقعها أو REST API.
 - 2026-10-08: استُبدل أصل الهيرو السابق بصورة كومة الكتب المقدمة من المستخدم داخل `public/`؛ لم يتغير توزيع مكونات الصفحة.
 - 2026-10-08: أضيفت رسمة الهيرو ثنائية اللون إلى خريطة الأصول؛ بقيت أقسام الهبوط منفصلة في `components/landing/` والبحث في `app/page.tsx`.
 - 2026-10-08: أضيفت مكونات الهبوط المستقلة وصور WebP التحريرية، ووُثّقت لوحة الأبيض والأسود وتأثيرات الزجاج بعد إعادة تصميم الواجهة؛ بقي البحث والمصادقة والمراجعات والمكتبة على عميل REST نفسه.
