@@ -102,7 +102,7 @@ export default function BookPage({
         <ArrowRight size={16} />
         العودة للكتب
       </Link>
-      <section className="mt-10 grid gap-10 border border-black/10 bg-white p-6 card-shadow md:grid-cols-[330px_1fr] md:gap-16 md:p-12">
+      <section className="page-enter mt-10 grid gap-10 border border-black/10 bg-white p-6 card-shadow md:grid-cols-[330px_1fr] md:gap-16 md:p-12">
         <div className="flex min-h-[420px] items-center justify-center rounded-xl bg-[#e8e8e6] p-8">
           <img
             src={book.cover_url}
@@ -159,7 +159,7 @@ export default function BookPage({
               reviews.map((r) => (
                 <article
                   key={r.id}
-                  className="rounded-xl border border-black/10 bg-white p-7"
+                  className="page-enter rounded-xl border border-black/10 bg-white p-7"
                 >
                   <div className="flex items-center justify-between">
                     <strong>{r.user_name}</strong>
@@ -191,6 +191,7 @@ export default function BookPage({
                     key={n}
                     aria-label={`${n} نجوم`}
                     onClick={() => setRating(n)}
+                    className="interactive-lift"
                   >
                     <Star
                       size={27}

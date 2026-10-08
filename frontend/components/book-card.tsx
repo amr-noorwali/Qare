@@ -4,7 +4,7 @@ import { Book } from '@/lib/api';
 
 export function BookCard({ book, index }: { book: Book; index?: number }) {
   return (
-    <Link href={`/books/${book.id}`} className="group block min-w-0" aria-label={`تفاصيل ${book.title}`}>
+    <Link href={`/books/${book.id}`} className="interactive-lift page-enter group block min-w-0" aria-label={`تفاصيل ${book.title}`}>
       <div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden rounded-2xl bg-[#e8e8e6]">
         <div className="absolute inset-4 rounded-xl border border-white/55" />
         <img src={book.cover_url} alt={`غلاف ${book.title}`} loading="lazy" className="editorial-cover relative z-10 h-[75%] max-w-[72%] object-contain drop-shadow-[10px_14px_20px_rgba(0,0,0,.23)]" />

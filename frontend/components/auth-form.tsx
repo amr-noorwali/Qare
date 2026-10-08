@@ -30,7 +30,7 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
   return <main className="relative min-h-[calc(100vh-76px)] overflow-hidden bg-[#eaeae8] px-5 py-16 md:py-24">
     <div className="absolute inset-0 bg-[url('/editorial-library.webp')] bg-cover bg-center opacity-[.17] grayscale" />
     <div className="absolute inset-0 bg-gradient-to-b from-white/65 via-white/55 to-white/80" />
-    <div className="glass-light relative mx-auto max-w-lg p-7 md:p-12">
+    <div className="glass-light page-enter relative mx-auto max-w-lg p-7 md:p-12">
       <Link href="/" className="inline-flex items-center gap-3 text-xl font-extrabold"><img src="/qare-logo.svg" alt="" width={40} height={40} className="h-10 w-10 object-contain"/>قارئ</Link>
       <p className="section-kicker mt-12 text-muted">مساحة القارئ</p>
       <h1 className="mt-4 text-4xl font-extrabold leading-tight">{mode === 'register' ? 'ابدأ حكايتك هنا.' : 'مرحبًا بعودتك.'}</h1>

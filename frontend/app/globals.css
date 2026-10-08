@@ -38,7 +38,36 @@ button, input, textarea, select { font: inherit; }
 .card-shadow { border-radius: 16px; box-shadow: 0 24px 60px rgba(0,0,0,.055); }
 .section-kicker { font-size: .875rem; font-weight: 700; line-height: 1.5; }
 .hairline { border-color: rgba(17,17,17,.13); }
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes hero-enter {
+    from { opacity: .35; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes soft-enter {
+    from { opacity: .72; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-enter { animation: hero-enter .55s ease-out both; }
+  .hero-enter-later { animation-delay: .12s; }
+  .page-enter { animation: soft-enter .55s ease-out backwards; }
+  .page-enter-later { animation-delay: .1s; }
+  .interactive-lift { transition: transform .24s ease, box-shadow .24s ease; }
+  .interactive-lift:active:not(:disabled) { transform: translateY(0); }
+  @supports (animation-timeline: view()) {
+    .scroll-reveal {
+      animation: soft-enter linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+  }
+}
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
+  .interactive-lift:hover:not(:disabled) { transform: translateY(-3px); }
+}
+.interactive-lift:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .editorial-cover { transition: none; }
+  .group:hover .editorial-cover { transform: none; }
+  .animate-pulse { animation: none; }
 }

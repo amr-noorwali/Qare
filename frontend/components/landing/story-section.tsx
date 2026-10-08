@@ -11,14 +11,14 @@ export function StorySection() {
   return (
     <section id="story" className="bg-[#ececea] py-20 md:py-28">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 md:grid-cols-[.95fr_1.05fr] md:items-center md:gap-20 md:px-8">
-        <div className="relative min-h-[470px] overflow-hidden md:min-h-[680px]">
+        <div className="scroll-reveal relative min-h-[470px] overflow-hidden md:min-h-[680px]">
           <img src="/story-hands-book.png" alt="رسم أبيض وأسود ليدين تقلّبان صفحات كتاب مفتوح" loading="lazy" className="absolute inset-0 h-full w-full object-contain" />
           <div className="glass-dark story-caption absolute bottom-5 left-5 right-5 px-6 py-5 text-white md:bottom-8 md:left-8 md:right-auto md:max-w-[290px]">
             <p className="section-kicker text-white/75">من الصفحة إلى الذاكرة</p>
             <p className="mt-2 text-lg font-bold leading-7">كل قراءة تترك أثرًا يستحق أن يُحفظ.</p>
           </div>
         </div>
-        <div className="py-2 md:py-10">
+        <div className="scroll-reveal py-2 md:py-10">
           <p className="section-kicker text-muted">حكاية قارئ</p>
           <h2 className="mt-7 max-w-lg text-4xl font-extrabold leading-[1.25] tracking-tight md:text-6xl">أكثر من كتاب.<br/><span className="font-normal text-muted">مساحة لما يتركه فيك.</span></h2>
           <p className="mt-7 max-w-xl text-base leading-relaxed text-muted">نؤمن بأن الكتاب لا ينتهي عند صفحته الأخيرة. قارئ مساحة بسيطة لتكتشف ما تقرأ، تشارك رأيك بصدق، وتعود إلى الكتب التي صنعت جزءًا من رحلتك.</p>
