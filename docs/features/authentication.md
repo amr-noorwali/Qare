@@ -14,7 +14,7 @@
 
 1. نموذجا `/register` و`/login` يستخدمان `AuthForm`.
 2. `frontend/lib/api.ts` يرسل بيانات التسجيل/الدخول إلى Go ويتلقى `{user,token}`.
-3. `services/auth.go` يتحقق من المدخلات، ويخزن كلمة المرور بتجزئة bcrypt، وينشئ جلسة في جدول `sessions`.
+3. `services/auth.go` يتحقق من المدخلات وينشئ تجزئة bcrypt ورمز الجلسة؛ `repositories/auth.go` يحفظ المستخدم والجلسة في SQLite.
 4. المسارات المحمية تمر عبر `Require`، الذي يتحقق من الرمز وتاريخ صلاحيته قبل تنفيذ المعالج.
 5. الترويسة تستدعي `/auth/me` عند تحميلها إذا وجدت رمزًا. بعد نجاح التسجيل أو الدخول تنتقل الواجهة إلى `/library`.
 
@@ -29,9 +29,10 @@
 | صفحات الواجهة | `frontend/app/register/page.tsx`, `frontend/app/login/page.tsx` |
 | النموذج والترويسة | `frontend/components/auth-form.tsx`, `frontend/components/header.tsx` |
 | عميل الـAPI | `frontend/lib/api.ts` (`auth`, `token`, `api`) |
-| المسارات والمعالجات | `backend/internal/routes/routes.go`, `backend/internal/handlers/api.go` |
+| المسارات والمعالجات | `backend/internal/routes/routes.go`, `backend/internal/handlers/auth.go`, `base.go` |
 | منطق الدخول | `backend/internal/services/auth.go` |
-| قاعدة البيانات | `users`, `sessions` في `backend/internal/repositories/database.go` |
+| استعلامات الدخول والجلسات | `backend/internal/repositories/auth.go` |
+| مخطط قاعدة البيانات | `users`, `sessions` في `backend/internal/repositories/migrations.go` |
 | الميزات التابعة | [المراجعات](reviews-ratings.md)، [المكتبة](personal-library.md) |
 
 ## API
@@ -51,6 +52,7 @@
 
 ## سجل التغييرات
 
+- 2026-10-08: نقل استعلامات المستخدم والجلسة من خدمة المصادقة إلى repository مستقل وتقسيم معالجات HTTP؛ بقيت استجابات الدخول والجلسات كما هي.
 - 2026-10-08: إضافة حركة CSS خفيفة للوحة الحساب وأزرارها؛ لم تتغير الجلسات أو API.
 - 2026-10-08: تدوير زوايا عناصر الواجهة في التسجيل والدخول والترويسة؛ لم تتغير الجلسات أو API.
 - 2026-10-08: رفع حجم تسميات الحقول والأزرار والنص المساعد وضبط تباعد الفقرة وفق مقياس الخط المركزي؛ لم يتغير تدفق المصادقة.

@@ -14,7 +14,7 @@
 
 في الفرونت، لا توجد صفحة مراجعات مستقلة أو مكون `ReviewForm` منفصل؛ نموذج النجوم والنص وحالتهما داخل صفحة تفاصيل الكتاب. وظائف REST في `lib/api.ts` والزر المشترك في `components/ui/button.tsx`. راجع [خريطة الفرونت إند](frontend-map.md).
 
-نموذج النجوم والنص في `frontend/app/books/[id]/page.tsx` → `books.review` أو `books.deleteReview` في `frontend/lib/api.ts` → مسارات محمية في `backend/internal/routes/routes.go` → `SaveReview` و`DeleteReview` في `backend/internal/handlers/api.go` → جدول `reviews` في SQLite.
+نموذج النجوم والنص في `frontend/app/books/[id]/page.tsx` → `books.review` أو `books.deleteReview` في `frontend/lib/api.ts` → مسارات محمية في `backend/internal/routes/routes.go` → معالجات `backend/internal/handlers/reviews.go` → تحقق `backend/internal/services/reviews.go` → استعلامات `backend/internal/repositories/reviews.go` → جدول `reviews` في SQLite.
 
 يتحقق Go من وجود الكتاب، وأن التقييم بين 1 و5، وأن نص المراجعة بعد إزالة الفراغات لا يقل عن 3 بايتات. `PUT` يستخدم `INSERT ... ON CONFLICT` للإنشاء أو التعديل، ويحدّث `created_at` عند التعديل. الحذف مقيد بـ`book_id` و`user_id` كي لا يحذف المستخدم مراجعة غيره. بعد الحفظ/الحذف تعيد الصفحة تحميل بيانات الكتاب والمراجعات. تُحسب `average_rating` و`review_count` عند قراءة الكتب، ولذلك تتأثر [القائمة](catalog-search.md) و[التفاصيل](book-details.md).
 
@@ -36,6 +36,7 @@
 
 ## سجل التغييرات
 
+- 2026-10-08: نقل تحقق المراجعات إلى service وSQL إلى repository وفصل معالجات HTTP؛ بقي التقييم والحفظ والحذف وعقود REST كما هي.
 - 2026-10-08: إضافة حركات CSS خفيفة لبطاقات المراجعات وأزرار التقييم؛ لم تتغير قواعد التقييم أو API.
 - 2026-10-08: تدوير زوايا عناصر عرض وكتابة المراجعات في الفرونت؛ لم تتغير قواعد التقييم أو API.
 - 2026-10-08: تحسين حجم نص المراجعات وتسميات نموذجها وتباعد الأسطر عبر مقياس الخط المركزي، دون تغيير عمليات الحفظ أو التقييم.

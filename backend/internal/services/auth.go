@@ -5,12 +5,15 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"errors"
-	"golang.org/x/crypto/bcrypt"
+	"qare/backend/internal/repositories"
 	"strings"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Auth struct{ DB *sql.DB }
+
 type User struct {
 	ID    int64  `json:"id"`
 	Name  string `json:"name"`
@@ -29,37 +32,37 @@ func (a Auth) Register(name, email, password string) (User, string, error) {
 	if err != nil {
 		return User{}, "", err
 	}
-	r, err := a.DB.Exec("INSERT INTO users(name,email,password_hash) VALUES(?,?,?)", name, email, string(hashed))
+	id, err := repositories.CreateUser(a.DB, name, email, string(hashed))
 	if err != nil {
 		return User{}, "", errors.New("البريد الإلكتروني مستخدم بالفعل")
 	}
-	id, _ := r.LastInsertId()
-	u := User{id, name, email}
-	t, err := a.session(id)
-	return u, t, err
+	user := User{id, name, email}
+	token, err := a.session(id)
+	return user, token, err
 }
+
 func (a Auth) Login(email, password string) (User, string, error) {
-	var u User
-	var h string
-	err := a.DB.QueryRow("SELECT id,name,email,password_hash FROM users WHERE email=?", strings.ToLower(strings.TrimSpace(email))).Scan(&u.ID, &u.Name, &u.Email, &h)
-	if err != nil || bcrypt.CompareHashAndPassword([]byte(h), []byte(password)) != nil {
+	record, err := repositories.UserByEmail(a.DB, strings.ToLower(strings.TrimSpace(email)))
+	if err != nil || bcrypt.CompareHashAndPassword([]byte(record.PasswordHash), []byte(password)) != nil {
 		return User{}, "", ErrInvalid
 	}
-	t, err := a.session(u.ID)
-	return u, t, err
+	token, err := a.session(record.ID)
+	return User{record.ID, record.Name, record.Email}, token, err
 }
-func (a Auth) session(id int64) (string, error) {
-	b := make([]byte, 32)
-	if _, err := rand.Read(b); err != nil {
+
+func (a Auth) session(userID int64) (string, error) {
+	bytes := make([]byte, 32)
+	if _, err := rand.Read(bytes); err != nil {
 		return "", err
 	}
-	t := hex.EncodeToString(b)
-	_, err := a.DB.Exec("INSERT INTO sessions(token,user_id,expires_at) VALUES(?,?,?)", t, id, time.Now().Add(30*24*time.Hour).UTC().Format(time.RFC3339))
-	return t, err
+	token := hex.EncodeToString(bytes)
+	err := repositories.CreateSession(a.DB, token, userID, time.Now().Add(30*24*time.Hour).UTC().Format(time.RFC3339))
+	return token, err
 }
+
 func (a Auth) User(token string) (User, error) {
-	var u User
-	err := a.DB.QueryRow("SELECT u.id,u.name,u.email FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token=? AND s.expires_at>?", token, time.Now().UTC().Format(time.RFC3339)).Scan(&u.ID, &u.Name, &u.Email)
-	return u, err
+	record, err := repositories.UserBySession(a.DB, token, time.Now().UTC().Format(time.RFC3339))
+	return User{record.ID, record.Name, record.Email}, err
 }
-func (a Auth) Logout(token string) { a.DB.Exec("DELETE FROM sessions WHERE token=?", token) }
+
+func (a Auth) Logout(token string) { repositories.DeleteSession(a.DB, token) }

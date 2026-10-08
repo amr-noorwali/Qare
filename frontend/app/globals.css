@@ -33,8 +33,8 @@ button, input, textarea, select { font: inherit; }
   border-radius: 12px;
   box-shadow: none;
 }
-.editorial-cover { filter: grayscale(1) contrast(1.05); transition: filter .5s ease, transform .6s ease; }
-.group:hover .editorial-cover { filter: grayscale(1) contrast(1.18); transform: scale(1.045); }
+.editorial-cover { transition: transform .6s ease; }
+.group:hover .editorial-cover { transform: scale(1.045); }
 .card-shadow { border-radius: 16px; box-shadow: 0 24px 60px rgba(0,0,0,.055); }
 .section-kicker { font-size: .875rem; font-weight: 700; line-height: 1.5; }
 .hairline { border-color: rgba(17,17,17,.13); }

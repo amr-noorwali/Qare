@@ -42,8 +42,13 @@ func TestCoreFlow(t *testing.T) {
 	token := registered["token"].(string)
 	request("POST", "/api/auth/login", `{"email":"reader@example.com","password":"secret123"}`, "", 200)
 	request("PUT", "/api/books/1/review", `{"rating":5,"body":"كتاب رائع ومميز"}`, "", 401)
+	request("PUT", "/api/books/999/review", `{"rating":5,"body":"كتاب رائع ومميز"}`, token, 404)
+	request("PUT", "/api/books/1/review", `{"rating":0,"body":"قصير"}`, token, 400)
+	request("DELETE", "/api/books/1/review", "", token, 404)
 	request("PUT", "/api/books/1/review", `{"rating":5,"body":"كتاب رائع ومميز"}`, token, 200)
 	request("PUT", "/api/books/1/review", `{"rating":4,"body":"قراءة ممتعة"}`, token, 200)
+	request("PUT", "/api/library/999", `{"status":"reading"}`, token, 404)
+	request("PUT", "/api/library/1", `{"status":"unknown"}`, token, 400)
 	request("PUT", "/api/library/1", `{"status":"reading"}`, token, 200)
 	result := request("GET", "/api/library", "", token, 200)
 	_ = result

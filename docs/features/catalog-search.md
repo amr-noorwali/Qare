@@ -14,11 +14,11 @@
 
 في الفرونت، `app/page.tsx` يحتفظ بنص البحث وحالة التحميل والنتائج، و`components/book-card.tsx` يعرض الكتاب، و`lib/api.ts` يرسل الطلب. لا يوجد مجلد ميزة مستقل؛ راجع [خريطة الفرونت إند](frontend-map.md).
 
-الأقسام الثابتة للصفحة الرئيسية في `frontend/components/landing/hero.tsx`, `story-section.tsx`, `reading-paths.tsx`, `membership-cta.tsx`. بطاقة الكتاب الآن أحادية اللون وتستخدم تحميلًا كسولًا للغلاف. البحث وحالاته ما زالت في `app/page.tsx`.
+الأقسام الثابتة للصفحة الرئيسية في `frontend/components/landing/hero.tsx`, `story-section.tsx`, `reading-paths.tsx`, `membership-cta.tsx`. عناصر بطاقة الكتاب أحادية اللون، لكن الغلاف يظهر بألوان صورته الأصلية ويُحمّل كسولًا. البحث وحالاته ما زالت في `app/page.tsx`.
 
-`frontend/app/page.tsx` → `books.list(q)` في `frontend/lib/api.ts` → `GET /api/books?q=...` في `backend/internal/routes/routes.go` → `Books` في `backend/internal/handlers/api.go` → استعلام `Books` في `backend/internal/repositories/books.go` → جدول `books` مع متوسط وعدد المراجعات من `reviews`.
+`frontend/app/page.tsx` → `books.list(q)` في `frontend/lib/api.ts` → `GET /api/books?q=...` في `backend/internal/routes/routes.go` → `Books` في `backend/internal/handlers/books.go` → استعلام `Books` في `backend/internal/repositories/books.go` → جدول `books` مع متوسط وعدد المراجعات من `reviews`.
 
-تعرض `frontend/components/book-card.tsx` الغلاف والعنوان والمؤلف والنوع والمتوسط وعدد المراجعات، وتربط البطاقة بصفحة [تفاصيل الكتاب](book-details.md). تُدرج ستة كتب أولية عبر `seed` في `backend/internal/repositories/database.go` عند إنشاء قاعدة فارغة.
+تعرض `frontend/components/book-card.tsx` الغلاف والعنوان والمؤلف والنوع والمتوسط وعدد المراجعات، وتربط البطاقة بصفحة [تفاصيل الكتاب](book-details.md). تُدرج ستة كتب أولية عبر `seed` في `backend/internal/repositories/seed.go` عند إنشاء قاعدة بلا كتب.
 
 ## API والبيانات
 
@@ -41,6 +41,8 @@
 
 ## سجل التغييرات
 
+- 2026-10-08: تحديث مسار معالج الكتب إلى ملف مستقل ونقل البيانات الأولية إلى `seed.go` بمعاملة؛ لم يتغير البحث أو الكتب المعروضة.
+- 2026-10-08: إعادة ألوان أغلفة الكتب في بطاقات القائمة بإزالة مرشح الرمادي من CSS؛ لم يتغير جلب الكتب أو البحث.
 - 2026-10-08: توسيع حركات CSS إلى بطاقات الكتب وأقسام الصفحة الرئيسية؛ بقي جلب الكتب والبحث وREST API كما هي.
 - 2026-10-08: إضافة حركة CSS قصيرة في الهيرو فقط مع احترام تقليل الحركة؛ لم يتغير جلب الكتب أو البحث.
 - 2026-10-08: إصلاح عرض الكتب محليًا بإعادة تشغيل Next.js بعد تعارض ملفات `.next`؛ كانت API تعيد ستة كتب، وأصبحت ملفات JavaScript تُحمّل بحالة 200.
